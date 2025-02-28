@@ -3,6 +3,7 @@
 typedef unsigned long long U64;
 #define NAME "Engine"
 #define BRD_SQ_NUM 120
+#define MAXGAMEMOVES 2048
 enum
 {
     EMPTY,
@@ -124,7 +125,21 @@ enum
     FALSE,
     TRUE
 };
-
+enum
+{
+    wKcA = 1,
+    wQcA = 2,
+    bKcA = 4,
+    bQcA = 8
+};
+typedef struct
+{
+    int move;
+    int castlePerm;
+    int enPas;
+    int fiftyMove;
+    U64 posKey;
+} S_UNDO;
 typedef struct
 {
     int pieces[BRD_SQ_NUM];
@@ -135,12 +150,25 @@ typedef struct
     int fiftyMove;
     int ply;
     int hisPly;
+    int castlePerm;
     U64 posKey;
     int pceNum[13];
     int bigPce[3];
     int majPce[3];
     int minPce[3];
+    S_UNDO history[MAXGAMEMOVES];
 
 } S_BOARD;
+
+// Macros
+#define FR2SQ(f, r) ((21 + (f)) + ((r) * 10))
+
+// Global Variables
+extern int Sq120ToSq64[BRD_SQ_NUM];
+extern int Sq64ToSq120[64];
+
+// Functions
+extern void AllInit();
+
 
 #endif
