@@ -1,4 +1,3 @@
-engine.o
-init.o
-engine.exe
+*.o
+*.exe
 .vscode/
