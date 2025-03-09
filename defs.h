@@ -1,6 +1,7 @@
 #ifndef DEFS_H
 #define DEFS_H
 #include <stdlib.h>
+#include <stdio.h>
 #define DEBUG
 #ifndef DEBUG
 #else
@@ -23,6 +24,7 @@ typedef unsigned long long U64;
 enum
 {
     EMPTY,
+
     wP,
     wN,
     wB,
@@ -133,7 +135,8 @@ enum
     F8,
     G8,
     H8,
-    NO_SQ
+    NO_SQ,
+    OFFBOARD
 
 };
 enum
@@ -167,7 +170,7 @@ typedef struct
     int ply;
     int hisPly;
     int castlePerm;
-    U64 posKey;  //Hash Key
+    U64 posKey; // Hash Key
     int pceNum[13];
     int bigPce[3];
     int majPce[3];
@@ -179,7 +182,8 @@ typedef struct
 
 // Macros
 #define FR2SQ(f, r) ((21 + (f)) + ((r) * 10))
-#define SQ64(sq120) Sq120ToSq64[sq120]
+#define SQ64(sq120) (Sq120ToSq64[(sq120)])
+#define SQ120(sq64) (Sq64ToSq120[(sq64)])
 #define POP(b) PopBit(b)
 #define CNT(b) CountBits(b)
 #define CLRBIT(bb, sq) ((bb) &= clearMask[(sq)])
@@ -202,7 +206,9 @@ extern void PrintBitBoard(U64 bb);
 extern int PopBit(U64 *bb);
 extern int CountBits(U64 b);
 
-
 // hashkeys.c
 extern U64 GeneratePosKey(const S_BOARD *pos);
+
+// Board.c
+extern void ResetBoard(S_BOARD *pos);
 #endif
