@@ -21,7 +21,7 @@ typedef unsigned long long U64;
 #define NAME "Engine"
 #define BRD_SQ_NUM 120
 #define MAXGAMEMOVES 2048
-#define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+#define STARTFEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 enum
 {
@@ -199,6 +199,10 @@ extern U64 clearMask[64];
 extern U64 sideKey;
 extern U64 pieceKeys[13][120];
 extern U64 castleKeys[16];
+extern char PceChar[];
+extern char SideChar[];
+extern char RankChar[];
+extern char FileChar[];
 
 // Functions
 // Init.c
@@ -213,4 +217,7 @@ extern U64 GeneratePosKey(const S_BOARD *pos);
 
 // Board.c
 extern void ResetBoard(S_BOARD *pos);
+extern int ParseFen(char *fen, S_BOARD *pos);
+extern void PrintBoard(const S_BOARD *pos );
+
 #endif

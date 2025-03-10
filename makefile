@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g  # Enable warnings and debugging
-SRCS = engine.c init.c bitboards.c hashkeys.c board.c    # Source files
+SRCS = engine.c init.c bitboards.c hashkeys.c board.c data.c    # Source files
 OBJS = $(SRCS:.c=.o)        # Convert .c to .o
 TARGET = engine             # Output file
 

@@ -33,18 +33,19 @@ void ResetBoard(S_BOARD *pos)
     pos->posKey = 0ULL;
 }
 
-int Parse_Fen(char *fen, S_BOARD *pos)
+int ParseFen(char *fen, S_BOARD *pos)
 {
     ASSERT(fen != NULL);
     ASSERT(pos != NULL);
+
     int rank = RANK_8;
     int file = FILE_A;
     int piece = 0;
     int count = 0;
-    int i = 0;
-    int sq64 = 0;
-    int sq120 = 0;
+    int i, sq64, sq120;
+
     ResetBoard(pos);
+
     while ((rank >= RANK_1) && *fen)
     {
         count = 1;
@@ -104,7 +105,7 @@ int Parse_Fen(char *fen, S_BOARD *pos)
             fen++;
             continue;
         default:
-            printf("FEN error \n");
+            printf("FEN error\n");
             return -1;
         }
 
@@ -120,15 +121,15 @@ int Parse_Fen(char *fen, S_BOARD *pos)
         }
         fen++;
     }
+
     ASSERT(*fen == 'w' || *fen == 'b');
     pos->side = (*fen == 'w') ? WHITE : BLACK;
     fen += 2;
+
     for (i = 0; i < 4; i++)
     {
         if (*fen == ' ')
-        {
             break;
-        }
         switch (*fen)
         {
         case 'K':
@@ -147,16 +148,54 @@ int Parse_Fen(char *fen, S_BOARD *pos)
             break;
         }
         fen++;
-        ASSERT(pos->castlePerm >= 0 && pos->castlePerm <= 15);
-        if (*fen != ' ')
-        {
-            file=fen[0]-'a';
-            rank=fen[1]-'1';
-            ASSERT(file>=FILE_A && file<=FILE_H);
-            ASSERT(rank>=RANK_1 && rank<=RANK_8);
-            pos->enPas=FR2SQ(file,rank);
-        }
-        pos->posKey=GeneratePosKey(pos);
     }
+
+    ASSERT(pos->castlePerm >= 0 && pos->castlePerm <= 15);
+    fen++;
+
+    if (*fen != '-')
+    {
+        file = fen[0] - 'a';
+        rank = fen[1] - '1';
+        ASSERT(file >= FILE_A && file <= FILE_H);
+        ASSERT(rank >= RANK_1 && rank <= RANK_8);
+        pos->enPas = FR2SQ(file, rank);
+        fen += 2;
+    }
+    else
+    {
+        pos->enPas = NO_SQ;
+        fen++;
+    }
+
+    pos->posKey = GeneratePosKey(pos);
     return 0;
+}
+void PrintBoard(const S_BOARD *pos)
+{
+    int sq, file, rank, piece;
+    printf("\nGame Board:\n\n");
+    for (rank = RANK_8; rank >= RANK_1; rank--)
+    {
+        printf("%d  ", rank + 1);
+        for (file = FILE_A; file <= FILE_H; file++)
+        {
+            sq = FR2SQ(file, rank);
+            piece = pos->pieces[sq];
+            printf("%3c", PceChar[piece]);
+        }
+        printf("\n");
+    }
+    printf("\n   ");
+    for (file = FILE_A; file <= FILE_H; file++)
+    {
+        printf("%3c", 'a' + file);
+    }
+    printf("\n");
+    printf("side:%c\n", SideChar[pos->side]);
+    printf("enPas:%d\n", pos->enPas);
+    printf("castle:%c%c%c%c\n",
+           pos->castlePerm & wKcA ? 'K' : '-', pos->castlePerm & wQcA ? 'Q' : '-',
+           pos->castlePerm & bKcA ? 'k' : '-', pos->castlePerm & bQcA ? 'q' : '-');
+    printf("posKey:%llX\n", pos->posKey);
 }
