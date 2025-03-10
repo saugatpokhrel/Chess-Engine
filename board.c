@@ -1,5 +1,31 @@
 #include <stdio.h>
 #include "defs.h"
+
+void UpdateListsMaterial(S_BOARD *pos)
+{
+    int piece, sq, index, color;
+    for (index = 0; index < BRD_SQ_NUM; index++)
+    {
+        sq = index;
+        piece = pos->pieces[index];
+        if (piece != OFFBOARD && piece != EMPTY)
+        {
+            color = PieceCol[piece];
+            if (PieceBig[piece] == TRUE)
+                pos->bigPce[color]++;
+            if (PieceMin[piece] == TRUE)
+                pos->minPce[color]++;
+
+            pos->material[color] += PieceVal[piece];
+            // piece list
+            pos->pList[piece][pos->pceNum[piece]] = sq;
+            pos->pceNum[piece]++;
+            if (piece == wK || piece == bK)
+                pos->KingSq[color] = sq;
+        }
+    }
+}
+
 void ResetBoard(S_BOARD *pos)
 {
     int index = 0;
