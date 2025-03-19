@@ -1,4 +1,5 @@
 #include "defs.h"
+#include<stdio.h>
 char PceChar[] = ".PNBRQKpnbrqk";
 char SideChar[] = "wb-";
 char RankChar[] = "12345678";

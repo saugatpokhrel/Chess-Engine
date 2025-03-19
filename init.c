@@ -48,32 +48,51 @@ void InitHashKeys(){
     }
 
 }
-void Initsq120to64()
-{
-    int index = 0;
-    int file = FILE_A;
-    int rank = RANK_1;
-    int sq = A1;
+// void Initsq120to64()
+// {
+//     int index = 0;
+//     int file = FILE_A;
+//     int rank = RANK_1;
+//     int sq = A1;
+//     int sq64 = 0;
+//     for (index = 0; index < BRD_SQ_NUM; index++)
+//     {
+//         Sq120ToSq64[index] = 65;
+//     }
+//     for (index = 0; index < 64; index++)
+//     {
+//         Sq64ToSq120[index] = 120;
+//     }
+//     for (rank = RANK_1; rank <= RANK_8; rank++)
+//     {
+//         for (file = FILE_A; file <= FILE_H; file++)
+//         {
+//             sq = FR2SQ(file, rank);
+//             Sq64ToSq120[sq64] = sq;
+//             Sq120ToSq64[sq] = sq64;
+//             sq64++;
+//         }
+//     }
+// }
+
+// Define a conversion array from 120-based to 64-based indices
+
+
+// Initialize the conversion arrays
+void Initsq120to64() {
     int sq64 = 0;
-    for (index = 0; index < BRD_SQ_NUM; index++)
-    {
-        Sq120ToSq64[index] = 65;
-    }
-    for (index = 0; index < 64; index++)
-    {
-        Sq64ToSq120[index] = 120;
-    }
-    for (rank = RANK_1; rank <= RANK_8; rank++)
-    {
-        for (file = FILE_A; file <= FILE_H; file++)
-        {
-            sq = FR2SQ(file, rank);
-            Sq64ToSq120[sq64] = sq;
-            Sq120ToSq64[sq] = sq64;
+    for (int rank = RANK_1; rank <= RANK_8; rank++) {
+        for (int file = FILE_A; file <= FILE_H; file++) {
+            int sq120 = FR2SQ(file, rank);
+            Sq120ToSq64[sq120] = sq64;
+            Sq64ToSq120[sq64] = sq120;
             sq64++;
         }
     }
 }
+
+
+
 
 
 void InitFilesbanksBrd(){
